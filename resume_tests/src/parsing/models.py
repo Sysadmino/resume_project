@@ -49,6 +49,7 @@ class Resume(models.Model):
     company = models.CharField(max_length=250, verbose_name='Возраст')
     experience = models.CharField(max_length=250, verbose_name='Опыт работы')
     description = models.TextField(verbose_name='Описание резюме')
+    last_job = models.TextField(verbose_name='Последнее место работы')
     city = models.ForeignKey('City', on_delete=models.CASCADE, verbose_name='Город')
     language = models.ForeignKey('Language', on_delete=models.CASCADE, verbose_name='Язык программирования')
     timestamp = models.DateField(auto_now_add=True)
