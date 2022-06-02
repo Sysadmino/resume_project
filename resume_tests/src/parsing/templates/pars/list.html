@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div style="display: inline-block;">
+    <div class="row">
+    <div class="col-md-3" style="margin-bottom: 20px;">
+        <form method="get" action="{% url 'list' %}">
+            <div class="mb-3">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">Найти</button>
+        </form>
+    </div>
+</div>
+{% for obj in object_list %}
+
+<div style="display: inline-block; margin-right: 20px; margin-bottom: 10px;">
+    <div class="card border-success mb-3" style="max-width: 18rem;">
+      <h5 style="height:65px" class="card-header bg-transparent border-success"><a href="{{obj.url}}">{{ obj.title }}</a></h5>
+      <div class="card-body text-success">
+        <div style="color: black;" class="card-title"><b>Возраст:</b> {{ obj.company }}</div>
+          <div style="color: black;" class="card-title"><b>Опыт работы:</b> {{ obj.experience }}</div>
+          <div style="color: black;" class="card-title"><b>Последнее место работы:</b> {{ obj.experience }}</div>
+        <p style="color: black;overflow: hidden; text-overflow: ellipsis;  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;" class="card-text"><b>Описание:</b> {{ obj.description }}</p>
+      </div>
+      <div class="card-footer bg-transparent border-success"><b>{{obj.city.name}} | {{obj.language.name}} |
+          <small>{{obj.timestamp|date:"d-m-Y"}}</small></b></div>
+    </div>
+</div>
+
+{% empty %}
+
+<h3 style="text-align: center">К сожалению по вашему запросу ничего ненайдено</h3>
+
+{% endfor %}
+{% if object_list %}
+<div class="row">
+    <div class="col">
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if object_list.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?city={{city}}&language={{ language }}&page=1" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <!--                            <span class="sr-only">Previous</span>-->
+                    </a>
+                </li>
+                    {% endif %}
+                    {% for page in object_list.paginator.page_range %}
+                         <li class="page-item {% if page == object_list.number %} active
+                            {% endif %}">
+                             <a class="page-link" href="?city={{city}}&language={{ language }}&page={{page}}">{{page}}</a></li>
+                    {% endfor %}
+                 {% if object_list.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?city={{city}}&language={{ language }}&page={{ object_list.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endif %}
+</div>
+
+
+{% endblock %}
